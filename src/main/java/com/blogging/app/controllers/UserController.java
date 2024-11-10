@@ -3,6 +3,7 @@ package com.blogging.app.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +30,12 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	
-	
 	@GetMapping("/csrf-token")
 	public CsrfToken getCsrfToken(HttpServletRequest request) {
 		return (CsrfToken) request.getAttribute("_csrf");
 	}
 	
+	 @PreAuthorize("hasRole('ADMIN')")
 	@GetMapping("/getAllUsers")
 	public ResponseEntity<UserResponseDto> getAllUser(@RequestParam(name = "pageNo")int pageNo, @RequestParam(name = "pageSize") int pageSize, @RequestParam(name="sortBy") String sortBy, @RequestParam(name="sortDir") String sortDir ){
 		UserResponseDto users =  this.userService.getAllUsers(pageNo, pageSize,sortBy,sortDir);
