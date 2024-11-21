@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.blogging.app.payloads.LoginDto;
 import com.blogging.app.payloads.UserDto;
 import com.blogging.app.services.UserService;
 import com.blogging.app.servicesImpl.UserServiceImpl;
@@ -41,8 +42,8 @@ public class PublicController {
 	}
 	
 	@PostMapping("/login")
-	public ResponseEntity<Map<String, String>> loginUser(@RequestBody UserDto userDto){
-		return userService.verifyUser(userDto);
+	public ResponseEntity<Map<String, String>> loginUser(@RequestBody LoginDto loginDto){
+		return userService.verifyUser(loginDto);
 	}
 	
 }

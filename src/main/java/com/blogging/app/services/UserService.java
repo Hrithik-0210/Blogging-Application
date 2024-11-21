@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 
+import com.blogging.app.payloads.LoginDto;
 import com.blogging.app.payloads.UserDto;
 import com.blogging.app.payloads.UserResponseDto;
  
@@ -16,5 +17,5 @@ public interface UserService {
 	UserDto getUserById(Integer userId);
 	UserResponseDto getAllUsers(int pageNo, int pageSize, String sortBy, String sortDir);
 	void deleteUser(Integer userId);
-	ResponseEntity<Map<String , String>> verifyUser(UserDto userDto);
+	ResponseEntity<Map<String , String>> verifyUser(LoginDto loginDto);
 }

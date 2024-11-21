@@ -16,8 +16,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import com.blogging.app.filter.JwtAuthFilter;
+
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 
 //import com.blogging.app.filter.JwtAuthFilter;
 
@@ -31,17 +38,18 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtAuthFilter jwtAuthFilter;
-
+	
+	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.csrf(customizer -> customizer.disable())
 				.authorizeHttpRequests(request -> request
-						.requestMatchers("/public/**").permitAll()
-						.requestMatchers("/api/users/getAllUsers").hasRole("ADMIN") // Only ADMIN can access this endpoint
-			            .requestMatchers("/api/users/**").authenticated()
-						.anyRequest().authenticated())
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html",
+								"/swagger-resources/**", "/webjars/**", "/public/**")
+						.permitAll().requestMatchers("/api/users/getAllUsers").hasRole("ADMIN") // Only ADMIN can access this endpoint
+						.requestMatchers("/api/users/**").authenticated().anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless session management for JWT
-				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before  the default filter
+				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // Add JWT filter before the default filter
 		return http.build();
 	}
 
@@ -62,5 +70,21 @@ public class SecurityConfig {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+	
+	
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new Info().title("Blogging API")
+                        .version("1.0")
+                        .description("API for Blogging Application"))
+                .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth", new SecurityScheme()
+                                .name("Authorization")
+                                .type(SecurityScheme.Type.HTTP)
+                                .scheme("bearer")
+                                .bearerFormat("JWT")));
+    }
 
 }

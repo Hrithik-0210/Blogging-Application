@@ -32,6 +32,7 @@ import org.springframework.stereotype.Service;
 
 import com.blogging.app.entities.Role;
 import com.blogging.app.entities.User;
+import com.blogging.app.payloads.LoginDto;
 import com.blogging.app.payloads.UserDto;
 import com.blogging.app.payloads.UserResponseDto;
 import com.blogging.app.repositories.RoleRepo;
@@ -165,16 +166,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public ResponseEntity<Map<String, String>> verifyUser(UserDto userDto) {
+	public ResponseEntity<Map<String, String>> verifyUser(LoginDto loginDto) {
 	    try {
 	        // Fetch the user from the database
-	        User user = userRepo.findByEmail(userDto.getEmail());
+	        User user = userRepo.findByEmail(loginDto.getEmail());
 	        if (user != null && user.getIsLoggedIn() == 1) {
 	            return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of("message", "User is already logged in."));
 	        }
 	        // Authenticate the user based on email and password
 	        Authentication authentication = authenticationManager
-	                .authenticate(new UsernamePasswordAuthenticationToken(userDto.getEmail(), userDto.getPassword()));
+	                .authenticate(new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword()));
 
 	        if (authentication.isAuthenticated()) {
 	        	 // Fetch user roles as a Set<String>
@@ -182,8 +183,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	                    .map(role -> role.getName()) // Extract the role name (e.g., "ADMIN" or "USER")
 	                    .collect(Collectors.toSet());
 	            
-	            String accessToken = jwtUtils.generateToken(userDto.getEmail(), roles);
-	            String refreshToken = jwtUtils.generateRefreshToken(userDto.getEmail(), roles);
+	            String accessToken = jwtUtils.generateToken(loginDto.getEmail(), roles);
+	            String refreshToken = jwtUtils.generateRefreshToken(loginDto.getEmail(), roles);
 
 	            // Mark the user as logged in
 	            user.setIsLoggedIn(1);
