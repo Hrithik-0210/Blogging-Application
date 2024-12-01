@@ -14,8 +14,11 @@ import com.blogging.app.payloads.ApiResponse;
 import com.blogging.app.payloads.CommentDto;
 import com.blogging.app.services.CommentService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/comment")
+@Tag(name = "Comment APIs")
 public class CommentController {
 	
 	@Autowired

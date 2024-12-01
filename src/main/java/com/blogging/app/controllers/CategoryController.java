@@ -1,5 +1,4 @@
 package com.blogging.app.controllers;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +19,12 @@ import com.blogging.app.payloads.CategoryDto;
 import com.blogging.app.payloads.CategoryResponseDto;
 import com.blogging.app.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/category")
+@Tag(name = "Category APIs")
 public class CategoryController {
 
 	@Autowired

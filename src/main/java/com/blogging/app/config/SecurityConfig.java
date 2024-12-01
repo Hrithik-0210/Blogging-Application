@@ -1,5 +1,7 @@
 package com.blogging.app.config;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +27,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.tags.Tag;
 
 //import com.blogging.app.filter.JwtAuthFilter;
 
@@ -79,6 +82,13 @@ public class SecurityConfig {
                         .version("1.0")
                         .description("API for Blogging Application"))
                 .addSecurityItem(new SecurityRequirement().addList("bearerAuth"))
+                .tags(Arrays.asList(
+                		new Tag().name("Public APIs"),
+                		new Tag().name("User APIs"),
+                		new Tag().name("Category APIs"),
+                		new Tag().name("Posts APIs"),
+                		new Tag().name("Comment APIs")
+                		))
                 .components(new Components()
                         .addSecuritySchemes("bearerAuth", new SecurityScheme()
                                 .name("Authorization")

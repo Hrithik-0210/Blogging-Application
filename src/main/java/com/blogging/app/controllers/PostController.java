@@ -1,8 +1,5 @@
 package com.blogging.app.controllers;
 
-
-
-
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +23,11 @@ import com.blogging.app.payloads.PostDto;
 import com.blogging.app.payloads.PostResponseDto;
 import com.blogging.app.services.PostService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/posts")
+@Tag(name = "Posts APIs")
 public class PostController {
 	
 	@Autowired

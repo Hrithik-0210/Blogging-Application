@@ -18,11 +18,13 @@ import com.blogging.app.payloads.UserDto;
 import com.blogging.app.services.UserService;
 import com.blogging.app.servicesImpl.UserServiceImpl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 //import jdk.internal.icu.impl.ICUBinary.Authenticate;
 
 @RestController
 @RequestMapping("/public")
+@Tag(name = "Public APIs")
 public class PublicController {
 	
 //	@Autowired

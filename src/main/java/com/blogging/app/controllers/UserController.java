@@ -20,11 +20,13 @@ import com.blogging.app.payloads.UserDto;
 import com.blogging.app.payloads.UserResponseDto;
 import com.blogging.app.services.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
+@Tag(name = "User APIs")
 public class UserController {
 	
 	@Autowired
